@@ -11,7 +11,7 @@
         },
         "data_description": {
           "token": "The per-clock Bearer token (starts with poem_).",
-          "screen_id": "The 40-character screen identifier for your clock."
+          "screen_id": "The screen ID of your clock (e.g. 80AB412341234)."
         }
       },
       "reauth_confirm": {
@@ -32,7 +32,7 @@
     "error": {
       "cannot_connect": "Failed to connect to Poem.town. Check your network and try again.",
       "invalid_auth": "Invalid API token for this clock.",
-      "invalid_screen_id": "The screen ID is invalid. It must be a 40-character identifier."
+      "invalid_screen_id": "The screen ID is invalid or was rejected by Poem.town."
     },
     "abort": {
       "already_configured": "This clock is already configured.",

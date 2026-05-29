@@ -27,7 +27,6 @@ from .const import (
     CONF_TOKEN,
     DEFAULT_NAME,
     DOMAIN,
-    SCREEN_ID_LENGTH,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -65,7 +64,7 @@ class PoemTownConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             screen_id = user_input[CONF_SCREEN_ID].strip()
 
-            if len(screen_id) != SCREEN_ID_LENGTH:
+            if not screen_id:
                 errors[CONF_SCREEN_ID] = "invalid_screen_id"
             else:
                 await self.async_set_unique_id(screen_id)

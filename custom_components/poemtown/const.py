@@ -17,6 +17,5 @@ NOTES_ENDPOINT: Final = f"{API_BASE_URL}/notes"
 
 # API constraints
 MAX_NOTE_LENGTH: Final = 140
-SCREEN_ID_LENGTH: Final = 40
 
 DEFAULT_NAME: Final = "Poem.town clock"

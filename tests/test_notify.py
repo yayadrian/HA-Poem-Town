@@ -28,7 +28,7 @@ from custom_components.poemtown.const import (
     NOTES_ENDPOINT,
 )
 
-SCREEN_ID = "A" * 40
+SCREEN_ID = "80AB412341234"
 TOKEN = "poem_testtoken"
 
 

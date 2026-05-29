@@ -16,7 +16,7 @@ from custom_components.poemtown.api import (
 )
 from custom_components.poemtown.const import MAX_NOTE_LENGTH, NOTES_ENDPOINT
 
-SCREEN_ID = "A" * 40
+SCREEN_ID = "80AB412341234"
 TOKEN = "poem_testtoken"
 
 

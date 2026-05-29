@@ -9,8 +9,10 @@ vocabulary aligned with these terms.
 - **Clock** — the physical Poem.town device the user owns. Holds exactly one API
   token. Modeled in Home Assistant as one config entry, one device, and one
   notify entity.
-- **Screen ID** — the 40-character identifier of a clock's display. Used as the
-  Home Assistant unique ID for the config entry, device, and entity.
+- **Screen ID** — the identifier of a clock's display (e.g. `80AB412341234`).
+  Used as the Home Assistant unique ID for the config entry, device, and entity.
+  (The Web API docs say "40-character", but real values are shorter; the
+  integration only requires a non-empty value and lets the API validate format.)
 - **Note** — a 1–140 character message posted to a clock. The only thing the Web
   API can do today is post a note.
 - **Check-in** — when the clock polls Poem.town and pulls pending notes. This is
