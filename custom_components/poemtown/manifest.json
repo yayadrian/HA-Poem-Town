@@ -1,0 +1,12 @@
+{
+  "domain": "poemtown",
+  "name": "Poem.town",
+  "codeowners": ["@yayadrian"],
+  "config_flow": true,
+  "documentation": "https://github.com/yayadrian/HA-Poem-Town",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/yayadrian/HA-Poem-Town/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

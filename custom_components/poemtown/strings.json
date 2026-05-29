@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect a Poem.town clock",
+        "description": "Find your clock's API token under Dashboard → your clock → Web API on poem.town.",
+        "data": {
+          "name": "Name",
+          "token": "API token",
+          "screen_id": "Screen ID"
+        },
+        "data_description": {
+          "token": "The per-clock Bearer token (starts with poem_).",
+          "screen_id": "The 40-character screen identifier for your clock."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to Poem.town. Check your network and try again.",
+      "invalid_auth": "Invalid API token for this clock.",
+      "invalid_screen_id": "The screen ID is invalid. It must be a 40-character identifier."
+    },
+    "abort": {
+      "already_configured": "This clock is already configured."
+    }
+  }
+}
