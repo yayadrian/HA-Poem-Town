@@ -22,3 +22,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
+          # "brands" requires submitting icons to the home-assistant/brands
+          # repository, which is external to this repo. Skip it in CI.
+          ignore: brands

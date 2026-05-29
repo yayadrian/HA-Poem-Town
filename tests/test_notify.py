@@ -83,6 +83,16 @@ async def test_send_message_too_long_raises(hass: HomeAssistant) -> None:
         assert mock.requests == {}
 
 
+@pytest.mark.parametrize("message", ["", "   "])
+async def test_send_message_empty_raises(hass: HomeAssistant, message: str) -> None:
+    """An empty or blank message raises an error before any network call."""
+    await _init_integration(hass)
+    with aioresponses() as mock:
+        with pytest.raises(HomeAssistantError):
+            await _send(hass, message)
+        assert mock.requests == {}
+
+
 async def test_send_message_runtime_401_starts_reauth(
     hass: HomeAssistant,
 ) -> None:

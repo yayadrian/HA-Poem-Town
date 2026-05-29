@@ -48,6 +48,8 @@ class PoemTownNotifyEntity(NotifyEntity):
     async def async_send_message(self, message: str, title: str | None = None) -> None:
         """Post a note to the clock's screen."""
         body = message
+        if not body or not body.strip():
+            raise HomeAssistantError("Note must not be empty")
         if len(body) > MAX_NOTE_LENGTH:
             raise HomeAssistantError(
                 f"Note exceeds {MAX_NOTE_LENGTH} characters (got {len(body)})"
