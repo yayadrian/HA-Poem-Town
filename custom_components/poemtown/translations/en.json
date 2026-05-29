@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Connect a Poem.town clock",
-        "description": "Find your clock's API token under Dashboard → your clock → Web API on poem.town.",
+        "description": "Find your clock's API token under Dashboard → your clock → Web API on poem.town. A short confirmation note is posted to the clock to verify the token.",
         "data": {
           "name": "Name",
           "token": "API token",
@@ -13,6 +13,20 @@
           "token": "The per-clock Bearer token (starts with poem_).",
           "screen_id": "The 40-character screen identifier for your clock."
         }
+      },
+      "reauth_confirm": {
+        "title": "Update Poem.town API token",
+        "description": "The API token for this clock was rejected. Enter a new token from Dashboard → your clock → Web API. A short confirmation note is posted to verify it.",
+        "data": {
+          "token": "API token"
+        }
+      },
+      "reconfigure": {
+        "title": "Update Poem.town API token",
+        "description": "Enter a new API token for this clock. A short confirmation note is posted to verify it.",
+        "data": {
+          "token": "API token"
+        }
       }
     },
     "error": {
@@ -21,7 +35,9 @@
       "invalid_screen_id": "The screen ID is invalid. It must be a 40-character identifier."
     },
     "abort": {
-      "already_configured": "This clock is already configured."
+      "already_configured": "This clock is already configured.",
+      "reauth_successful": "The API token was updated successfully.",
+      "reconfigure_successful": "The API token was updated successfully."
     }
   }
 }

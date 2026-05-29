@@ -11,8 +11,10 @@ clock's screen using the [Poem.town Web API](https://poem.town/developer/web-api
 
 ## Features
 
-- Config-flow setup (no YAML) per clock.
+- Config-flow setup (no YAML), one clock per entry, each as its own device.
 - A `notify` entity per configured clock for sending notes (1–140 characters).
+- Reconfigure and reauth flows for updating a clock's API token (e.g. after it
+  is rotated or revoked) without removing and re-adding the integration.
 
 ## Installation
 
@@ -50,7 +52,12 @@ data:
   message: "Hello from Home Assistant!"
 ```
 
-Notes are limited to 140 characters.
+Notes are limited to 140 characters; longer messages raise an error rather than
+being truncated. The optional `title` field is ignored — only `message` is sent.
+
+If the clock's token is revoked, posting fails and Home Assistant raises a
+"reconfigure required" notification; update the token from the integration's
+page (**Settings → Devices & Services → Poem.town → Reconfigure**).
 
 ## API reference
 
