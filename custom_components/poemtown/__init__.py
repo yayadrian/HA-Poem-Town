@@ -15,9 +15,7 @@ PLATFORMS: list[Platform] = [Platform.NOTIFY]
 type PoemTownConfigEntry = ConfigEntry[PoemTownClient]
 
 
-async def async_setup_entry(
-    hass: HomeAssistant, entry: PoemTownConfigEntry
-) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: PoemTownConfigEntry) -> bool:
     """Set up Poem.town from a config entry."""
     session = async_get_clientsession(hass)
     client = PoemTownClient(
@@ -31,8 +29,6 @@ async def async_setup_entry(
     return True
 
 
-async def async_unload_entry(
-    hass: HomeAssistant, entry: PoemTownConfigEntry
-) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: PoemTownConfigEntry) -> bool:
     """Unload a config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

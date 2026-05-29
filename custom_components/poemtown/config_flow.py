@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from typing import Any
 
 import voluptuous as vol
@@ -41,6 +42,14 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     }
 )
 
+STEP_TOKEN_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_TOKEN): TextSelector(
+            TextSelectorConfig(type=TextSelectorType.PASSWORD)
+        ),
+    }
+)
+
 
 class PoemTownConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Poem.town."""
@@ -62,22 +71,12 @@ class PoemTownConfigFlow(ConfigFlow, domain=DOMAIN):
                 await self.async_set_unique_id(screen_id)
                 self._abort_if_unique_id_configured()
 
-                client = PoemTownClient(
-                    session=async_get_clientsession(self.hass),
-                    token=user_input[CONF_TOKEN],
-                    screen_id=screen_id,
+                # There is no read endpoint, so confirm credentials by posting
+                # a short note. The clock shows it on next check-in.
+                errors = await self._async_verify_token(
+                    user_input[CONF_TOKEN], screen_id
                 )
-                try:
-                    # There is no read endpoint, so confirm credentials by
-                    # posting a short note. The clock shows it on next check-in.
-                    await client.async_post_note("Connected to Home Assistant")
-                except PoemTownAuthError:
-                    errors["base"] = "invalid_auth"
-                except PoemTownValidationError:
-                    errors["base"] = "invalid_screen_id"
-                except PoemTownError:
-                    errors["base"] = "cannot_connect"
-                else:
+                if not errors:
                     return self.async_create_entry(
                         title=user_input[CONF_NAME],
                         data={
@@ -92,3 +91,70 @@ class PoemTownConfigFlow(ConfigFlow, domain=DOMAIN):
             data_schema=STEP_USER_DATA_SCHEMA,
             errors=errors,
         )
+
+    async def async_step_reauth(
+        self, entry_data: Mapping[str, Any]
+    ) -> ConfigFlowResult:
+        """Handle re-authentication when a token is rejected."""
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Confirm a new token for an existing clock."""
+        errors: dict[str, str] = {}
+        entry = self._get_reauth_entry()
+
+        if user_input is not None:
+            errors = await self._async_verify_token(
+                user_input[CONF_TOKEN], entry.data[CONF_SCREEN_ID]
+            )
+            if not errors:
+                return self.async_update_reload_and_abort(
+                    entry, data_updates={CONF_TOKEN: user_input[CONF_TOKEN]}
+                )
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=STEP_TOKEN_SCHEMA,
+            errors=errors,
+        )
+
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Update the API token for an already-configured clock."""
+        errors: dict[str, str] = {}
+        entry = self._get_reconfigure_entry()
+
+        if user_input is not None:
+            errors = await self._async_verify_token(
+                user_input[CONF_TOKEN], entry.data[CONF_SCREEN_ID]
+            )
+            if not errors:
+                return self.async_update_reload_and_abort(
+                    entry, data_updates={CONF_TOKEN: user_input[CONF_TOKEN]}
+                )
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=STEP_TOKEN_SCHEMA,
+            errors=errors,
+        )
+
+    async def _async_verify_token(self, token: str, screen_id: str) -> dict[str, str]:
+        """Verify credentials by posting a note. Returns an errors dict."""
+        client = PoemTownClient(
+            session=async_get_clientsession(self.hass),
+            token=token,
+            screen_id=screen_id,
+        )
+        try:
+            await client.async_post_note("Connected to Home Assistant")
+        except PoemTownAuthError:
+            return {"base": "invalid_auth"}
+        except PoemTownValidationError:
+            return {"base": "invalid_screen_id"}
+        except PoemTownError:
+            return {"base": "cannot_connect"}
+        return {}

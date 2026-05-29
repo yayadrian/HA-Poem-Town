@@ -23,6 +23,10 @@ class PoemTownValidationError(PoemTownError):
     """Raised when the request fails validation (422)."""
 
 
+class PoemTownRateLimitError(PoemTownError):
+    """Raised when the API rate limit is hit (429)."""
+
+
 class PoemTownClient:
     """Minimal client for the Poem.town Web API.
 
@@ -51,7 +55,7 @@ class PoemTownClient:
         Returns the created note object (``id`` and ``postedAt``) on success.
         Raises a :class:`PoemTownError` subclass on failure.
         """
-        if not body:
+        if not body or not body.strip():
             raise PoemTownValidationError("Note body must not be empty")
         if len(body) > MAX_NOTE_LENGTH:
             raise PoemTownValidationError(
@@ -69,11 +73,13 @@ class PoemTownClient:
                 if resp.status == 422:
                     text = await resp.text()
                     raise PoemTownValidationError(f"Validation failed: {text}")
+                if resp.status == 429:
+                    raise PoemTownRateLimitError(
+                        "Rate limited by Poem.town; try again later"
+                    )
                 if resp.status != 201:
                     text = await resp.text()
-                    raise PoemTownError(
-                        f"Unexpected response {resp.status}: {text}"
-                    )
+                    raise PoemTownError(f"Unexpected response {resp.status}: {text}")
                 return await resp.json()
         except aiohttp.ClientError as err:
             raise PoemTownError(f"Connection error: {err}") from err
