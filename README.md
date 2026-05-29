@@ -35,7 +35,7 @@ clock's screen using the [Poem.town Web API](https://poem.town/developer/web-api
 2. Enter:
    - **Name** — a friendly name for the clock.
    - **API token** — the per-clock Bearer token from *Dashboard → your clock → Web API* on poem.town (starts with `poem_`).
-   - **Screen ID** — the 40-character screen identifier for your clock.
+   - **Screen ID** — the screen ID of your clock (e.g. `7CDA2990A994`).
 
 During setup the integration posts a short confirmation note to validate the
 credentials (the API has no read endpoint to test against).

@@ -16,7 +16,7 @@ from custom_components.poemtown.const import (
     NOTES_ENDPOINT,
 )
 
-SCREEN_ID = "A" * 40
+SCREEN_ID = "7CDA2990A994"
 TOKEN = "poem_testtoken"
 USER_INPUT = {
     CONF_NAME: "Living room clock",
@@ -65,12 +65,10 @@ async def test_user_flow_validation_error(hass: HomeAssistant) -> None:
     assert result["errors"] == {"base": "invalid_screen_id"}
 
 
-async def test_user_flow_short_screen_id_rejected(hass: HomeAssistant) -> None:
-    """A screen id of the wrong length is rejected before any network call."""
+async def test_user_flow_empty_screen_id_rejected(hass: HomeAssistant) -> None:
+    """An empty screen id is rejected before any network call."""
     with aioresponses() as mock:
-        result = await _start_user_flow(
-            hass, {**USER_INPUT, CONF_SCREEN_ID: "tooshort"}
-        )
+        result = await _start_user_flow(hass, {**USER_INPUT, CONF_SCREEN_ID: "  "})
         assert mock.requests == {}
 
     assert result["type"] is FlowResultType.FORM
