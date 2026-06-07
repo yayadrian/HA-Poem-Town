@@ -1,4 +1,6 @@
-# Poem.town — Home Assistant integration
+**⚠️ Disclaimer: This integration is unofficial and not officially supported or endorsed by Poem.town. Use at your own risk.**
+
+# Poem.town 🪶 — Custom Home Assistant integration
 
 A custom [Home Assistant](https://www.home-assistant.io/) integration for
 [Poem.town](https://poem.town) clocks. It lets Home Assistant post notes to a
@@ -34,10 +36,10 @@ clock's screen using the [Poem.town Web API](https://poem.town/developer/web-api
 1. Go to **Settings → Devices & Services → Add Integration** and search for **Poem.town**.
 2. Enter:
    - **Name** — a friendly name for the clock.
-   - **API token** — the per-clock Bearer token from *Dashboard → your clock → Web API* on poem.town (starts with `poem_`).
-   - **Screen ID** — the screen ID of your clock (e.g. `80AB412341234`).
+   - **API token** — the per-clock Bearer token from Poem.town Dashboard > *Dashboard → your clock → Web API* on poem.town (starts with `poem_`).
+   - **Screen ID** — the Screen ID of your clock (e.g. `80AB412341234`).
 
-During setup the integration posts a short confirmation note to validate the
+During setup, the integration posts a short confirmation note to validate the
 credentials (the API has no read endpoint to test against).
 
 ## Usage
