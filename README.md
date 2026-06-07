@@ -2,6 +2,10 @@
 
 # Poem.town 🪶 — Custom Home Assistant integration
 
+[![Validate](https://github.com/yayadrian/HA-Poem-Town/actions/workflows/validate.yml/badge.svg)](https://github.com/yayadrian/HA-Poem-Town/actions/workflows/validate.yml)
+[![Test](https://github.com/yayadrian/HA-Poem-Town/actions/workflows/test.yml/badge.svg)](https://github.com/yayadrian/HA-Poem-Town/actions/workflows/test.yml)
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
+
 A custom [Home Assistant](https://www.home-assistant.io/) integration for
 [Poem.town](https://poem.town) clocks. It lets Home Assistant post notes to a
 clock's screen using the [Poem.town Web API](https://poem.town/developer/web-api).
@@ -18,12 +22,19 @@ clock's screen using the [Poem.town Web API](https://poem.town/developer/web-api
 - Reconfigure and reauth flows for updating a clock's API token (e.g. after it
   is rotated or revoked) without removing and re-adding the integration.
 
+## Requirements
+
+- Home Assistant **2025.1.0** or newer.
+- A Poem.town clock with a per-clock API token (from *Dashboard → your clock →
+  Web API* on poem.town).
+
 ## Installation
 
 ### HACS (custom repository)
 
-1. In HACS, add this repository as a custom repository (type: *Integration*).
-2. Install **Poem.town**.
+1. In HACS, open the three-dot menu → **Custom repositories**, paste this
+   repository's URL, and choose category **Integration**.
+2. Search for **Poem.town** in HACS and install it.
 3. Restart Home Assistant.
 
 ### Manual
@@ -66,6 +77,20 @@ page (**Settings → Devices & Services → Poem.town → Reconfigure**).
 - Base URL: `https://poem.town/api/v1`
 - Endpoint: `POST /notes` with `{ "screenId": "...", "body": "..." }`
 - Auth: `Authorization: Bearer poem_...`
+
+## Development
+
+Run the linter and tests the same way CI does:
+
+```bash
+python3.13 -m venv .venv
+.venv/bin/pip install pytest-homeassistant-custom-component aioresponses ruff
+.venv/bin/ruff check custom_components tests
+.venv/bin/ruff format --check custom_components tests
+.venv/bin/pytest
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ## Disclaimer
 
